@@ -3,11 +3,12 @@
 // @namespace    reddit.com/r/agentlame
 // @description  enter something useful
 // @include     http://www.reddit.com/user/PostsMRCquotes
-// @version  1.0
+// @version	1.1
 // ==/UserScript==
 
 
 function messagegrep() {
+    console.log('running');
     
     // Don't mess with.
     var oneday = 86400000,        
@@ -15,24 +16,29 @@ function messagegrep() {
         onemonth = 30*oneday,
         oneyear = 365*oneday,
         twoyears = 2*oneyear,
+        fouryears = 4*oneyear,
         loop = 0,
         now = new Date().getTime(),
         stop = false,
         modMineURL = '';
     
     ///// Settings ////////
-    var page = 'moderator',  //Options: sent, inbox, messages, moderator
-        subonly = 'atheism', // overrides 'page'.
-        sender = '',
-        receiver = '',
+    var page = 'inbox', //Options: sent, inbox, messages, moderator
+        subonly = '', // overrides 'page'.
+        sender = '',  //author
+        receiver = '', //dest
         contains = '',
-        goto = now - twoyears;
+        goto = now - fouryears;
     
     if (!subonly) {
         modMineURL = 'http://www.reddit.com/message/'+ page +'.json?count=100';
     } else {
+        receiver = '#' + subonly;
         modMineURL = 'http://www.reddit.com/r/'+ subonly +'/about/message/inbox.json?count=100';
     }
+    
+    // overridehack: custom thread to search.
+    //modMineURL = 'http://www.reddit.com/r/atheism/comments/1fv01d/mod_post_official_retroactivefeedback_thread.json'
 
     getSubs(modMineURL);
 
